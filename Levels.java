@@ -187,6 +187,8 @@ public class Levels{
                 case 'E':
                     Row.add(Tiles.createExit());
                     break;
+				case 'i':
+				    Row.add(Tiles.createIce());
                 default:
                     System.out.println("Invalid tile code: " + c);
                     break;
@@ -236,3 +238,4 @@ public class Levels{
     }
 
 }
+
