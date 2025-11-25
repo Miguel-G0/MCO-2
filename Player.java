@@ -51,5 +51,7 @@ public class Player{
         this.isAlive = true;
         this.Xpos = StartingX;
         this.Ypos = StartingY;
+        this.ChipsCollected = 0;
+        this.Inventory = new InventoryManagement();
     }
 }
