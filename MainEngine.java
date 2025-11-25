@@ -221,4 +221,78 @@ public class MainEngine {
             }
         }
     }
+
+    private void slideOnIce(String direction) {
+
+
+            boolean keepSliding = true;
+            
+            while (keepSliding) {
+                int currentX = Chip.getXpos();
+                int currentY = Chip.getYpos();
+                int nextX = currentX;
+                int nextY = currentY;
+                
+                switch (direction) {
+                    case "up":
+                        nextY--;
+                        break;
+                    case "down":
+                        nextY++;
+                        break;
+                    case "left":
+                        nextX--;
+                        break;
+                    case "right":
+                        nextX++;
+                        break;
+                }
+                
+                if (!level.inBoundary(nextX, nextY)) {
+                    break;
+                }
+                
+                Tiles nextTile = level.getTile(nextX, nextY);
+                
+                if (nextTile.getTileName().equals("Exit")) {
+                    if (Chip.getChipsCollected() >= level.getRequiredChips()) {
+                        level.setComplete(true);
+                        Chip.nextPos(nextX, nextY);
+                    }
+                    break;
+                }
+                if (!canMove(nextTile)) {
+                    break;
+                }
+                if (nextTile.hasChip()) {
+                    if (nextTile.collectChip()) {
+                        Chip.collectChip();
+                    }
+                }
+                if (nextTile.checkHasItem()) {
+                    Item item = nextTile.collectItem();
+                    Chip.collectItem(item);
+                }
+                
+                if (nextTile.getTileName().equals("Water")) {
+                    if (!Chip.getInventory().checkFlipper()) {
+                        Chip.nextPos(nextX, nextY);
+                        Chip.die();
+                        break;
+                    }
+                }
+                if (nextTile.getTileName().equals("Fire")) {
+                    if (!Chip.getInventory().checkFireBoot()) {
+                        Chip.nextPos(nextX, nextY);
+                        Chip.die();
+                        break;
+                    }
+                }
+                
+            Chip.nextPos(nextX, nextY);
+            if (!(nextTile instanceof IceTile)) {
+                keepSliding = false;
+            } 
+        }
+    }
 }
