@@ -43,7 +43,11 @@ public class Tiles {
     public static Tiles createFire() {
         return new FireTile("Fire");
     }
-    
+
+  	public static Tiles createIce() {
+		return new IceTile("Ice");
+	}
+  
     public static Tiles createRedDoor() {
         return new RedDoor("RedDoor");
     }
@@ -126,3 +130,4 @@ public class Tiles {
         return collectedItem;
     }
 }
+
