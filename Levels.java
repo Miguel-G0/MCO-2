@@ -9,7 +9,7 @@ public class Levels{
     private int Width;
     private int Height;
     private int level;
-    private int levelNum;
+    private int totalLevels=2;
 
     public Levels(boolean isComplete, int Width, int Height, int RequiredChips,int level){
         this.Width = Width;
@@ -78,7 +78,14 @@ public class Levels{
     public int getLevel(){
         return level;
     }
-     public int getPlayerStartX() {
+    private int getRequiredChipsForLevel(int levelNum) {
+        switch(levelNum) {
+            case 1: return 3;
+            case 2: return 3;
+            default: return 3;
+        }
+    }
+    public int getPlayerStartX() {
         for (int y = 0; y < Height; y++) {
             for (int x = 0; x < Width; x++) {
                 if (Map.get(y).get(x).getSign() == 'c') {
@@ -86,9 +93,8 @@ public class Levels{
                 }
             }
         }
-        return 1; // Default fallback
+        return 1;
     }
-    
     public int getPlayerStartY() {
         for (int y = 0; y < Height; y++) {
             for (int x = 0; x < Width; x++) {
@@ -97,7 +103,7 @@ public class Levels{
                 }
             }
         }
-        return 1; // Default fallback
+        return 1;
     }
 
     //This resets the level
@@ -214,9 +220,9 @@ public class Levels{
     }
 
     public String[] getMapDisplay(int playerX, int playerY) {
-            String[] display = new String[Height];
-            for (int i = 0; i < Height; i++) {
-                StringBuilder row = new StringBuilder();
+        String[] display = new String[Height];
+        for (int i = 0; i < Height; i++) {
+            StringBuilder row = new StringBuilder();
                 for (int j = 0; j < Width; j++) {
                     if (i == playerY && j == playerX) {
                         row.append('c');
@@ -226,7 +232,7 @@ public class Levels{
                 }
                 display[i] = row.toString();
             }
-            return display;
-        }
+        return display;
+    }
 
 }
