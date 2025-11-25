@@ -14,8 +14,6 @@ public InventoryManagement(){
     this.hasFireboots = false;
 }
 
-
-
 public void addItem(Item item){
     if(item.getName().equals("RedKey")){
         redKeys++;
@@ -34,6 +32,13 @@ public boolean checkFlipper(){
 
 public boolean checkFireBoot(){
     return hasFireboots;
+}
+
+public int getRedKeys(){
+    return redKeys;
+}
+public int getBlueKeys(){
+    return blueKeys;
 }
 
 public boolean useRedKey(){
