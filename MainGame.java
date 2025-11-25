@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import javax.swing.*;
 
 public class MainGame {
 	private InventoryManagement inventory;
@@ -12,10 +11,10 @@ public class MainGame {
 	public MainGame(){
 		this.inventory = new InventoryManagement();
         this.currentLevel = 1;
-		nextLevel(currentLevel);
+		initializeLevel(currentLevel);
 	}
 
-     public Player getChip() {
+    public Player getChip() {
         return Chip;
     }
     
@@ -27,18 +26,36 @@ public class MainGame {
         return engine;
     }
 
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public int getAllLevels() {
+        return allLevels;
+    }
+
+    public void nextLevel() {
+        if (currentLevel < allLevels) {
+            currentLevel++;
+            initializeLevel(currentLevel);
+        }
+    }
+
     //used to load the next level
-    private void nextLevel(int levelNum){
-        int neededChips = 3;
+    private void initializeLevel(int levelNum){
+
         int width = 21;
         int height = 11;
-        
+        int neededChips;
         switch(levelNum){
             case 1:
                 neededChips = 3;
                 break;
             case 2:
                 neededChips = 3;
+                break;
+            default:
+                neededChips = 0;
                 break;
         }
         
@@ -53,66 +70,39 @@ public class MainGame {
         this.engine = new MainEngine(Chip, level);
     }
 
-    public static void main(String[] args) {
-        
-        SwingUtilities.invokeLater(() -> new GUI());
-    }
-
-    public void displayMainMenu(){
-	System.out.println("===CHIP'S CHALLENGE===");
-        System.out.println("	1. Start Game");
-        System.out.println("	2. Exit");
-        Scanner choice = new Scanner(System.in);
-        switch(choice.nextInt()){
-            case 1:
-                play();
-                break;
-            case 2:
-                System.out.println("Game shutting down...");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid choice.");
-                displayMainMenu();
-                break;
-        }	
-        choice.close();
-    }
-
-
     public void play(){
-         Scanner sc = new Scanner(System.in);
-    currentLevel = 1; // Reset to level 1 when starting a new game
-    nextLevel(currentLevel);
-    
-    while(currentLevel <= allLevels){
-        while(!level.isComplete() && Chip.getLife()){
-            printMap();
-            System.out.println("Chips: "+Chip.getChipsCollected()+" / "+level.getRequiredChips());
-            System.out.print("Move (WASD): ");
-            char input = sc.next().charAt(0);
-            engine.Movement(input);
-        }
+        Scanner sc = new Scanner(System.in);
+        currentLevel = 1; // Reset to level 1 when starting a new game
+        initializeLevel(currentLevel);
         
-        if(!Chip.getLife()){
-            System.out.println("You died!");
-            break;
-        }
-        
-        if(level.isComplete()){
-            if(currentLevel < allLevels){
-                System.out.println("Level "+currentLevel+" Complete!");
-                System.out.println("Proceeding to Level "+(currentLevel+1));
-                currentLevel++;
-                nextLevel(currentLevel);
-            } else {
-                System.out.println("All levels completed!");
+        while(currentLevel <= allLevels){
+            while(!level.isComplete() && Chip.getLife()){
+                printMap();
+                System.out.println("Chips: "+Chip.getChipsCollected()+" / "+level.getRequiredChips());
+                System.out.print("Move (WASD): ");
+                char input = sc.next().charAt(0);
+                engine.Movement(input);
+            }
+            
+            if(!Chip.getLife()){
+                System.out.println("You died!");
                 break;
             }
+            
+            if(level.isComplete()){
+                if(currentLevel < allLevels){
+                    System.out.println("Level "+currentLevel+" Complete!");
+                    System.out.println("Proceeding to Level "+(currentLevel+1));
+                    currentLevel++;
+                    initializeLevel(currentLevel);
+                } else {
+                    System.out.println("All levels completed!");
+                    break;
+                }
+            }
         }
-    }
-    endgame();
-    askPlayAgain(sc);
+        endgame();
+        askPlayAgain(sc);
     }
 
     public void endgame(){
@@ -149,10 +139,3 @@ public class MainGame {
 		}
 	}
 }
-
-
-
-
-
-
-
